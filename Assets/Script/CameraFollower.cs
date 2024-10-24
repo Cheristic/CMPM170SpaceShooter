@@ -1,29 +1,38 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraFollower : MonoBehaviour
 {
-    public float MAX_X_DISTANCE;
-    public float MAX_Z_DISTANCE;
-    public float FOLLOW_SPEED;
     public Transform followee;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+
+    public float DISTANCE_MULTIPLIER;
+    public float VELOCITY_GAIN;
+    public float DERIVATIVE_GAIN;
+    public float MAX_DISTANCE_FROM_PLAYER;
+    public float MAX_VELOCITY;
+    Vector3 error, lastError, deltaError, velocity;
 
     // Update is called once per frame
     void Update()
     {
-        float dx = followee.position.x - transform.position.x;
-        float dz = followee.position.z - transform.position.z;
-        if (Mathf.Abs(dx) > MAX_X_DISTANCE)
-        {
-            transform.Translate(Mathf.Sign(dx) * FOLLOW_SPEED * Time.deltaTime, 0, 0, Space.World);
-        }
-        if (Mathf.Abs(dz) > MAX_Z_DISTANCE)
-        {
-            transform.Translate(0, 0, Mathf.Sign(dz) * FOLLOW_SPEED * Time.deltaTime, Space.World);
-        }
+        Vector3 mousePos = Input.mousePosition;
+        mousePos.z = transform.position.y;
+        mousePos = Camera.main.ScreenToWorldPoint(mousePos);
+        mousePos.y = followee.position.y;
+
+        Vector3 targetDir = mousePos - followee.position;
+        targetDir = Vector3.ClampMagnitude(targetDir * DISTANCE_MULTIPLIER, MAX_DISTANCE_FROM_PLAYER) ;
+        Vector3 targetPos = targetDir + followee.position;
+        targetPos.y = transform.position.y;
+
+        error = targetPos - transform.position;
+
+        deltaError = (error - lastError) / Time.deltaTime;
+        lastError = error;
+
+        velocity += (VELOCITY_GAIN * deltaError) + DERIVATIVE_GAIN * error;
+        velocity = Vector3.ClampMagnitude(velocity, MAX_VELOCITY);
+
+        transform.Translate(velocity, Space.World);
     }
 }

@@ -27,7 +27,7 @@ public class UnitController : MonoBehaviour
             }
             else
             {
-                Debug.Log("DED");
+                //Debug.Log("DED");
             }
         }
     }

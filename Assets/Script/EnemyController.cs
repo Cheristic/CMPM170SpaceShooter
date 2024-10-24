@@ -21,35 +21,16 @@ public class EnemyController : MonoBehaviour
         var new_bullet = Instantiate(bullet,
                      transform.position + transform.rotation * new Vector3(0, 0, 3),
                      transform.rotation);
-        var ctrl = new_bullet.GetComponent<BulletController>();
-        ctrl.lifetime = 5;
-        ctrl.speed = 25;
-        ctrl.damage = 10;
-        ctrl.player = false;
         new_bullet = Instantiate(bullet,
                      transform.position - transform.rotation * new Vector3(0, 0, 3),
                      transform.rotation*Quaternion.Euler(0,180,0));
-        ctrl = new_bullet.GetComponent<BulletController>();
-        ctrl.lifetime = 5;
-        ctrl.speed = 25;
-        ctrl.damage = 10;
-        ctrl.player = false;
+
         new_bullet = Instantiate(bullet,
                      transform.position + Quaternion.Euler(0, 90, 0)* transform.rotation * new Vector3(0, 0, 3),
                      transform.rotation * Quaternion.Euler(0, 90, 0));
-        ctrl = new_bullet.GetComponent<BulletController>();
-        ctrl.lifetime = 5;
-        ctrl.speed = 25;
-        ctrl.damage = 10;
-        ctrl.player = false;
         new_bullet = Instantiate(bullet,
                      transform.position + Quaternion.Euler(0, -90, 0) * transform.rotation * new Vector3(0, 0, 3),
                      transform.rotation * Quaternion.Euler(0, -90, 0));
-        ctrl = new_bullet.GetComponent<BulletController>();
-        ctrl.lifetime = 5;
-        ctrl.speed = 25;
-        ctrl.damage = 10;
-        ctrl.player = false;
         GetComponent<AudioSource>().Play();
     }
 
