@@ -1310,8 +1310,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocity: {x: 0, y: 0, z: 0}
   MAX_SPEED: 25
-  DASH_MULT: 3
-  MAX_DASH_FRAMES: 20
+  DASH_MULT: 3.5
+  MAX_DASH_FRAMES: 15
   last_shot: 0
   fire_delay: 0.25
   bullet: {fileID: 3659691316210375, guid: 3d4016f8ff83b6a40a453a09bcef6685, type: 3}
