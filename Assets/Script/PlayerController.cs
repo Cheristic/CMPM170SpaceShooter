@@ -5,6 +5,11 @@ public class PlayerController : MonoBehaviour
 {
     public Vector3 velocity;
     public float MAX_SPEED;
+    public float DASH_MULT;
+    public int MAX_DASH_FRAMES;
+    private bool dashOn;
+    private float dashInt;
+    private int dashCounter;
 
     public float last_shot;
     public float fire_delay;
@@ -12,13 +17,29 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        dashOn = false;
+        dashCounter = 0;
+        dashInt = 1 / DASH_MULT;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(velocity * Time.deltaTime*MAX_SPEED, Space.Self);
+
+        if (dashCounter > 0)
+        {
+            dashInt = 1;
+            dashCounter -= 1;
+        }
+        else
+        {
+            dashInt = 1/DASH_MULT;
+            dashCounter = 0;
+            //dashOn = false;
+        }
+   
+
+        transform.Translate(velocity * Time.deltaTime*MAX_SPEED*(DASH_MULT*dashInt), Space.Self);
 
         Vector3 mouse = Mouse.current.position.value;
         mouse.z = Camera.main.transform.position.y;
@@ -32,6 +53,15 @@ public class PlayerController : MonoBehaviour
         Vector2 move = context.ReadValue<Vector2>();
         velocity.x = move.x;
         velocity.z = move.y;
+    }
+
+    public void Dash(InputAction.CallbackContext context)
+    {
+        if (dashCounter == 0)
+        {
+            //dashOn = true;
+            dashCounter = MAX_DASH_FRAMES;
+        } 
     }
 
     public void Fire(InputAction.CallbackContext context)
